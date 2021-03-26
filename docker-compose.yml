@@ -2,7 +2,7 @@ version: '2'
 
 services:
   streaming-block:
-    build: ./streaming-block
+    build: ./streaming
     network_mode: host
   capture-block:
     build: .
