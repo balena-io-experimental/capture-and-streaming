@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  streaming-block:
+    build: ./streaming-block
+    network_mode: host
+  capture-block:
+    build: .
+    network_mode: host
+    privileged: true
