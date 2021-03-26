@@ -1,0 +1,28 @@
+FROM balenalib/%%BALENA_MACHINE_NAME%%
+
+RUN apt-get update && \
+    apt-get install -y vim git && \
+    apt-get install -y build-essential wget gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly gstreamer1.0-tools libgstreamer1.0-dev libgstreamer1.0-0-dbg libgstreamer1.0-0 && \
+    apt-get install -y libgstreamer-plugins-base1.0-dev libgstrtspserver-1.0-0 && \
+    apt-get install -y autoconf automake autopoint libtool && \
+    apt-get install -y gtk-doc-tools
+
+RUN apt-get install -y libraspberrypi-bin libraspberrypi-dev
+
+WORKDIR /usr/src/app
+
+RUN git clone https://github.com/thaytan/gst-rpicamsrc.git && \
+    cd gst-rpicamsrc && \
+    ./autogen.sh && \
+    make && \
+    make install
+
+RUN git clone git://anongit.freedesktop.org/gstreamer/gst-rtsp-server && \
+    cd gst-rtsp-server && \
+    git checkout 1.4 && \
+    ./autogen.sh && \
+    make && \
+    make install && cd ..
+
+
+CMD ["sleep", "infinity"]
