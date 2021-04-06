@@ -1,7 +1,9 @@
-# capture-block-demo
-Demo of new video capture block and streaming block
+# capture-and-streaming
+Example of using gstreamer to take a camera output and stream with RTSP, then feed that into WebRTC.
 
 ## Usage
+In the Device Configuration, add the custom configuration variable `BALENA_HOST_CONFIG_start_x` and set the value to `1`.
+
 ssh into the capture-block and change to the `/usr/src/app/gst-rtsp-server/examples` folder. Issue the following command to start capturing from `dev/video0`:
 
 `./test-launch --gst-debug=3 "( rpicamsrc bitrate=8000000 awb-mode=tungsten preview=false ! video/x-h264, width=640, height=480, framerate=30/1 ! h264parse ! rtph264pay name=pay0 pt=96 )"`
