@@ -1,5 +1,5 @@
 # capture-and-streaming
-Example of using gstreamer to take a camera output and stream with RTSP, then feed that into WebRTC.
+Example of using gstreamer to take a camera output and stream with RTSP, then convert that into WebRTC.
 
 ## Usage
 In the Device Configuration, add the custom configuration variable `BALENA_HOST_CONFIG_start_x` and set the value to `1`.
