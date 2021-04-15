@@ -17,12 +17,12 @@ RUN git clone https://github.com/thaytan/gst-rpicamsrc.git && \
     make && \
     make install
 
-RUN git clone git://anongit.freedesktop.org/gstreamer/gst-rtsp-server && \
-    cd gst-rtsp-server && \
-    git checkout 1.4 && \
-    ./autogen.sh && \
-    make && \
-    make install && cd ..
+#RUN git clone git://anongit.freedesktop.org/gstreamer/gst-rtsp-server && \
+#    cd gst-rtsp-server && \
+#    git checkout 1.4 && \
+#    ./autogen.sh && \
+#    make && \
+#    make install && cd ..
 
 
 CMD ["sleep", "infinity"]

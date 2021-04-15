@@ -5,6 +5,6 @@ services:
     build: ./streaming
     network_mode: host
   capture-block:
-    build: .
+    build: ./rtsp-server
     network_mode: host
     privileged: true
