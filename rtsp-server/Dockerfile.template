@@ -11,18 +11,14 @@ RUN apt-get install -y libraspberrypi-bin libraspberrypi-dev
 
 WORKDIR /usr/src/app
 
+COPY . .
+
 RUN git clone https://github.com/thaytan/gst-rpicamsrc.git && \
     cd gst-rpicamsrc && \
     ./autogen.sh && \
     make && \
     make install
 
-RUN git clone git://anongit.freedesktop.org/gstreamer/gst-rtsp-server && \
-    cd gst-rtsp-server && \
-    git checkout 1.4 && \
-    ./autogen.sh && \
-    make && \
-    make install && cd ..
+RUN cd gst-rtsp-server && ./autogen.sh && make && make install
 
-
-CMD ["sleep", "infinity"]
+CMD ["/bin/bash", "/usr/src/app/entry.sh"]
