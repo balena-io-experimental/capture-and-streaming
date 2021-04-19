@@ -1,4 +1,5 @@
 # Finds video devices that do capture
+# Not used... yet.
 
 for dev in `find /dev -iname 'video*' -printf "%f\n"`
 do
