@@ -7,6 +7,9 @@ RUN apt-get update && \
     apt-get install -y autoconf automake autopoint libtool && \
     apt-get install -y gtk-doc-tools v4l-utils
 
+RUN apt update && \
+    apt install gstreamer1.0-omx
+    
 RUN apt-get install -y libraspberrypi-bin libraspberrypi-dev
 
 WORKDIR /usr/src/app
