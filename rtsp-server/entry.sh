@@ -1,4 +1,7 @@
 #!/bin/bash
+red=`tput setaf 1`
+green=`tput setaf 2`
+reset=`tput sgr0`
 
 cd gst-rtsp-server/examples
 rpicam=$(vcgencmd get_camera)
@@ -11,6 +14,15 @@ else
     echo "No Rpi camera found. Searching for USB cameras..."
     #a = list devices using v4l2 | get line below line matching *camera*(usb* | take the first line | remove leading spaces
     a=$(v4l2-ctl --list-devices | awk '/[cC]amera.+\(usb/{getline; print}' | head -n 1 | sed -e 's/^[ \t]*//')
-    echo "Starting capture using $a"
-    # put usb webcam capture here using device $a...
+    echo "Found device ${a}."
+    echo "Device supports the following formats:"
+    v4l2-ctl --list-formats-ext
+    if v4l2-ctl --list-formats-ext | grep -q "YUYV"
+    then
+        echo "${green}Starting capture of YUYV stream, 640x480, 15 fps...${reset}"
+        ./launch --gst-debug=3 "( v4l2src device=${a} !  v4l2convert ! video/x-raw,width=640,height=480,framerate=15/1 ! omxh264enc target-bitrate=6000000 control-rate=variable ! video/x-h264,profile=baseline ! rtph264pay name=pay0 pt=96 )" 
+    else
+        echo -e "${green}Starting capture of MJPG stream, 640x480, 10 fps...${reset}"
+        ./launch --gst-debug=3 "( v4l2src device=${a} ! image/jpeg,width=640,height=480,framerate=10/1 ! queue ! jpegdec ! ! omxh264enc target-bitrate=6000000 control-rate=variable ! video/x-h264,profile=baseline ! rtph264pay name=pay0 pt=96 )" 
+    fi
 fi
