@@ -1,5 +1,5 @@
 # capture-and-streaming
-Example of using gstreamer to take a camera output and stream with RTSP, then convert that into WebRTC.
+Blocks for capturing video, processing it, and streaming it over WebRTC. (Note: This is still a work in progress. Once completed it will be moved to a different Org. Do not rely on this repo while it is still in the Playground.)
 
 ## Usage
 In the Device Configuration, add the custom configuration variable `BALENA_HOST_CONFIG_start_x` and set the value to `1`. You also need to increase the default "Define device GPU memory in megabytes" using the dashboard. (Or [device configuration variables](https://www.balena.io/docs/reference/OS/advanced/)) 192 MB seems to be the minimum, but your results may vary.
