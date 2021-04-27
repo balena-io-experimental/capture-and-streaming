@@ -15,9 +15,11 @@ You can also use a custom pipeline to change the default height, width, and fram
 To change the height and width when using a pi Camera, edit the values in the above pipeline and then set the `GST_RTSP_PIPELINE` to the edited pipeline.
 
 For a standard USB webcam that uses YUYV:
+
 `v4l2src device=/dev/video0 !  v4l2convert ! video/x-raw,width=640,height=480,framerate=15/1 ! omxh264enc target-bitrate=6000000 control-rate=variable ! video/x-h264,profile=baseline ! rtph264pay name=pay0 pt=96`
 
 For an older webcam that only supports jpeg:
+
 `v4l2src device=/dev/video0 ! image/jpeg,width=640,height=480,framerate=10/1 ! queue ! jpegdec ! omxh264enc target-bitrate=6000000 control-rate=variable ! video/x-h264,profile=baseline ! rtph264pay name=pay0 pt=96`
 
 In fact, you can change almost any part of the pipeline to suit your needs, but make sure it ends with an rtp output such as `rtph264pay`. 
