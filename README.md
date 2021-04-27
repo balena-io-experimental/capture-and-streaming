@@ -2,7 +2,7 @@
 Example of using gstreamer to take a camera output and stream with RTSP, then convert that into WebRTC.
 
 ## Usage
-In the Device Configuration, add the custom configuration variable `BALENA_HOST_CONFIG_start_x` and set the value to `1`. You also need to increase the default "Define device GPU memory in megabytes" using the dashboard. 192 MB seems to be the minimum, but your results may vary.
+In the Device Configuration, add the custom configuration variable `BALENA_HOST_CONFIG_start_x` and set the value to `1`. You also need to increase the default "Define device GPU memory in megabytes" using the dashboard. (Or [device configuration variables](https://www.balena.io/docs/reference/OS/advanced/)) 192 MB seems to be the minimum, but your results may vary.
 
 ### Capture Block
 
