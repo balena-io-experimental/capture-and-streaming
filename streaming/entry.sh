@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 echo "Video-streaming block started, waiting for other services to settle..."
 
 # Allow time for capture/processing to start
@@ -33,6 +34,14 @@ then
         sleep 30
     fi
 else
-    echo "Found WEBRTC_RTSP_INPUT, using $WEBRTC_RTSP_INPUT as video-capture block input..."
-    ./webrtc-streamer "$WEBRTC_RTSP_INPUT" -H 0.0.0.0:"$port"
+    if [[ -z $WEBRTC_OPTIONS ]]
+    then
+        echo "Found WEBRTC_RTSP_INPUT, using $WEBRTC_RTSP_INPUT as video-capture block input..."
+        ./webrtc-streamer "$WEBRTC_RTSP_INPUT" -H 0.0.0.0:"$port"
+    else
+        echo "Found WEBRTC_RTSP_INPUT and WEBRTC_OPTIONS. Setting video capture input to:"
+        echo "$WEBRTC_RTSP_INPUT $WEBRTC_OPTIONS"
+        ./webrtc-streamer "$WEBRTC_RTSP_INPUT" "$WEBRTC_OPTIONS"
+    fi
+        
 fi
