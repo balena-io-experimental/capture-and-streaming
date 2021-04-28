@@ -32,7 +32,19 @@ A RTSP stream will be available on `rtsp://localhost:8554/server` to other conta
 
 The Streaming Block takes an RTSP stream as an input and produces a WebRTC stream as an output. The input stream is selected automatically but can be overriden. If a processing block is running on the device, it will use that block's RTSP output stream as an input. If no processing block is found, it will look for a capture block and use that as the input. If neither are found, or you want to override this behavior, you can specify an RTSP input stream with the service variable `WEBRTC_RTSP_INPUT`. By default, the output WebRTC stream will be on port 80, but you can change that by specifying the service variable `WEBRTC_PORT`.
 
-The streaming block utilizes [webrtc-streamer](https://github.com/mpromonet/webrtc-streamer) so all of its features are available to use as well.
+The streaming block utilizes [webrtc-streamer](https://github.com/mpromonet/webrtc-streamer) so all of its features are available to use as well. For instance, you can pass the options shown in [this list](https://github.com/mpromonet/webrtc-streamer#usage) using the `WEBRTC_OPTIONS` Device variable. It must be used in conjunction with `WEBRTC_RTSP_INPUT` to create a full input for the webrtc-streamer. If you supply a value for `WEBRTC_OPTIONS` it will launch the following command, giving you full control over the streamer:
+```
+./webrtc-streamer WEBRTC_RTSP_INPUT WEBRTC_OPTIONS
+```
+
+So for instance if you want to specify an external TURN server, use:
+
+`WEBRTC_RTSP_INPUT` = `-H 0.0.0.0:80` and `WEBRTC_OPTIONS` = `-sstun.l.google.com:19302` which is equivalent to:
+
+```
+./webrtc-streamer -H 0.0.0.0:80 -sstun.l.google.com:19302
+```
+
 
 ### Processing Block
 The processing block allows you to transform an RTSP stream. It will automatically use the capture block as its input if it exists on the device. Otherwise, specify an RTSP input stream with the `PROC_RTSP_INPUT` service variable. The output of the processing block will be available on `rtsp://localhost:8558/proc` to other containers in the application. (Replace localhost with the device's IP address to view the stream outside the device.) This block is ideally suited for use with the capture and streaming blocks, and video will automatically be routed through this block if the other two are present.
