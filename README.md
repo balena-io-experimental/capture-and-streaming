@@ -2,7 +2,7 @@
 Blocks for capturing video, processing it, and streaming it over WebRTC. (Note: This is still a work in progress. Once completed it will be moved to a different Org. Do not rely on this repo while it is still in the Playground.)
 
 ## Usage
-In the Device Configuration, add the custom configuration variable `BALENA_HOST_CONFIG_start_x` and set the value to `1`. You also need to increase the default "Define device GPU memory in megabytes" using the dashboard. (Or [device configuration variables](https://www.balena.io/docs/reference/OS/advanced/)) 192 MB seems to be the minimum, but your results may vary.
+In the Device Configuration, add the custom configuration variable `BALENA_HOST_CONFIG_start_x` and set the value to `1`. You also need to increase the default "Define device GPU memory in megabytes" using the dashboard. (Or use [device configuration variables](https://www.balena.io/docs/reference/OS/advanced/)) 192 MB seems to be the minimum, but your results may vary.
 
 ### Capture Block
 
@@ -24,7 +24,7 @@ For an older webcam that only supports jpeg:
 
 `v4l2src device=/dev/video0 ! image/jpeg,width=640,height=480,framerate=10/1 ! queue ! jpegdec ! omxh264enc target-bitrate=6000000 control-rate=variable ! video/x-h264,profile=baseline ! rtph264pay name=pay0 pt=96`
 
-In fact, you can change almost any part of the pipeline to suit your needs, but make sure it ends with an rtp output such as `rtph264pay`. 
+In fact, you can change almost any part of the pipeline to suit your needs, but make sure it uses the proper device name and ends with an rtp output such as `rtph264pay`. Also be sure that your camera (or source) supports the desired size and framerate. When the capture block starts, it displays this information. You can also ssh into the block and run `v4l2-ctl --list-formats-ext` to see supported features.
 
 A RTSP stream will be available on `rtsp://localhost:8554/server` to other containers in the application. (Replace localhost with the device's IP address to view the stream outside the device)
 
@@ -33,10 +33,6 @@ A RTSP stream will be available on `rtsp://localhost:8554/server` to other conta
 The Streaming Block takes an RTSP stream as an input and produces a WebRTC stream as an output. The input stream is selected automatically but can be overriden. If a processing block is running on the device, it will use that block's RTSP output stream as an input. If no processing block is found, it will look for a capture block and use that as the input. If neither are found, or you want to override this behavior, you can specify an RTSP input stream with the service variable `WEBRTC_RTSP_INPUT`. By default, the output WebRTC stream will be on port 80, but you can change that by specifying the service variable `WEBRTC_PORT`.
 
 The streaming block utilizes [webrtc-streamer](https://github.com/mpromonet/webrtc-streamer) so all of its features and API are available to use as well.
-
-ssh into the streaming-block and issue the following command: 
-
-`./webrtc-streamer rtsp://localhost:8554/server -H 0.0.0.0:80`
 
 ### Processing Block
 The processing block allows you to transform an RTSP stream. It will automatically use the capture block as its input if it exists on the device. Otherwise, specify an RTSP input stream with the `PROC_RTSP_INPUT` service variable. The output of the processing block will be available on `rtsp://localhost:8558/proc` to other containers in the application. (Replace localhost with the device's IP address to view the stream outside the device.) This block is ideally suited for use with the capture and streaming blocks, and video will automatically be routed through this block if the other two are present.
