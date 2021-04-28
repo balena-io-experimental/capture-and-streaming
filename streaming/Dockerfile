@@ -1,9 +1,9 @@
 FROM mpromonet/webrtc-streamer:latest
 
-
 WORKDIR /app
 
-COPY config.json config.json
-COPY *.mkv ./
+RUN apt update && apt install -y jq
 
-ENTRYPOINT ["sleep", "infinity"]
+COPY . .
+
+ENTRYPOINT ["/bin/bash", "/app/entry.sh"]
