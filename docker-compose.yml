@@ -1,10 +1,12 @@
 version: '2'
 
 services:
-  streaming-block:
+  video-streaming:
     build: ./streaming
     network_mode: host
-  capture-block:
+    labels:
+      io.balena.features.supervisor-api: '1'
+  video-capture:
     build: ./rtsp-server
     network_mode: host
     privileged: true
