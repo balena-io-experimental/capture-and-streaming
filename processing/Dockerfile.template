@@ -1,0 +1,45 @@
+FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3.7-build
+
+WORKDIR /usr/src/app
+
+RUN apt update && apt upgrade && apt install -y cmake libtiff5-dev libjasper-dev libpng12-dev \
+    libavcodec-dev libavformat-dev libswscale-dev libv4l-dev \
+    libatlas-base-dev gfortran unzip tar
+
+RUN apt install -y libxvidcore-dev libx264-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
+    libgstreamer1.0-0 \
+    gstreamer1.0-plugins-base \
+    gstreamer1.0-plugins-good \
+    gstreamer1.0-plugins-bad \
+    gstreamer1.0-plugins-ugly \
+    gstreamer1.0-libav \
+    gstreamer1.0-doc \
+    gstreamer1.0-tools \
+    gstreamer1.0-plugins-base gstreamer1.0-plugins-good
+
+RUN python3 -m pip install protobuf cython numpy
+
+ENV OPENCV_VERSION=3.4.12
+
+RUN wget https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.tar.gz -O opencv-${OPENCV_VERSION}.tar.gz && \
+    wget https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.tar.gz -O opencv_contrib-${OPENCV_VERSION}.tar.gz && \
+    tar -xvf opencv-${OPENCV_VERSION}.tar.gz && \
+    tar -xvf opencv_contrib-${OPENCV_VERSION}.tar.gz
+
+RUN cd opencv-${OPENCV_VERSION} && mkdir -p build && cd build && cmake \
+    -D CMAKE_BUILD_TYPE=RELEASE \
+    -D OPENCV_EXTRA_MODULES_PATH=/usr/src/app/opencv_contrib-${OPENCV_VERSION}/modules \
+    -D ENABLE_NEON=ON \
+    -D ENABLE_VFPV3=ON \
+    -D WITH_TBB=ON \
+    -D WITH_GSTREAMER=ON \
+    -D OPENCV_GENERATE_PKGCONFIG=YES \
+    -D BUILD_opencv_python3=ON \
+    -D PYTHON3_EXECUTABLE=$(which python3) \
+    -D BUILD_TESTS=OFF \
+    -D BUILD_EXAMPLES=OFF .. && \
+    make -j4 && \
+    make install && \
+    ldconfig
+
+CMD ["sleep", "infinity"]
