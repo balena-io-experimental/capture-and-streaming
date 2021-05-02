@@ -1,5 +1,8 @@
 import cv2
 
+# THIS IS A WORK IN PROGRESS!!
+
+
 #cap = cv2.VideoCapture('rtsp://192.168.1.237:8554/server')
 cap = cv2.VideoCapture(0)
 if not cap.isOpened():
