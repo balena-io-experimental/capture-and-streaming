@@ -1,4 +1,6 @@
-FROM balenalib/%%BALENA_MACHINE_NAME%%
+FROM balenalib/jetson-nano-ubuntu:bionic
+
+ENV R_DEVICE jetson-nano
 
 # Keep sources list at r32 for cuda 10 and cudnn 7
 RUN sed -i 's/r32.4 main/r32 main/g' /etc/apt/sources.list.d/nvidia.list && apt-get update
@@ -27,29 +29,19 @@ RUN apt-get update && apt-get install -y wget tar lbzip2 python3 libegl1 && \
     rm -rf Tegra210_Linux_R32.4.2_aarch64.tbz2 && \
     rm -rf Linux_for_Tegra && \
     echo "/usr/lib/aarch64-linux-gnu/tegra" > /etc/ld.so.conf.d/nvidia-tegra.conf && ldconfig
-    
-RUN apt-get update && \
-    apt-get install -y vim git && \
+ 
+RUN apt-get update && apt-get install -y vim git && \
     apt-get install -y build-essential wget gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly gstreamer1.0-tools libgstreamer1.0-dev libgstreamer1.0-0-dbg libgstreamer1.0-0 && \
-    apt-get install -y libgstreamer-plugins-base1.0-dev libgstrtspserver-1.0-0 && \
+    apt-get install -y libgstreamer-plugins-base1.0-dev libgstreamer-plugins-bad1.0-dev libgstreamer-plugins-good1.0-dev libgstrtspserver-1.0-0 && \
     apt-get install -y autoconf automake autopoint libtool && \
     apt-get install -y gtk-doc-tools v4l-utils
 
-RUN apt update && \
-    apt install gstreamer1.0-omx
-    
-RUN apt-get install -y libraspberrypi-bin libraspberrypi-dev
 
 WORKDIR /usr/src/app
 
 COPY . .
 
-RUN git clone https://github.com/thaytan/gst-rpicamsrc.git && \
-    cd gst-rpicamsrc && \
-    ./autogen.sh && \
-    make && \
-    make install
-
 RUN cd gst-rtsp-server && ./autogen.sh && make && make install
 
 CMD ["/bin/bash", "/usr/src/app/entry.sh"]
+
