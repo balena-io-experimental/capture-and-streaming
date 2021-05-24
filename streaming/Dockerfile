@@ -2,7 +2,7 @@ FROM mpromonet/webrtc-streamer:latest
 
 WORKDIR /app
 
-RUN apt update && apt install -y jq
+RUN apt update && apt install -y jq curl
 
 COPY . .
 
