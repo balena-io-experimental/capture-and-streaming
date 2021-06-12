@@ -10,3 +10,5 @@ services:
     build: ./rtsp-server
     network_mode: host
     privileged: true
+    labels:
+          io.balena.features.balena-api: '1'
