@@ -2,7 +2,7 @@
 Blocks for capturing video, processing it, and streaming it over WebRTC. (Note: This is still a work in progress. Once completed it will be moved to a different Org. Do not rely on this repo while it is still in the Playground.)
 
 ## Usage
-In the Device Configuration, add the custom configuration variable `BALENA_HOST_CONFIG_start_x` and set the value to `1`. You also need to increase the default "Define device GPU memory in megabytes" using the dashboard. (Or use [device configuration variables](https://www.balena.io/docs/reference/OS/advanced/)) 192 MB seems to be the minimum, but your results may vary.
+The capture block will automatically set `BALENA_HOST_CONFIG_start_x` to `1` and `BALENA_HOST_CONFIG_gpu_mem` to `192`. This effectively utilizes 192 MB of system memory for the GPU, regardless of your dashboard setting for "Define device GPU memory in megabytes." Note that when the block changes these settings, your device will reboot. (Usually, this only happens the first time the block runs.)
 
 ### Capture Block
 
