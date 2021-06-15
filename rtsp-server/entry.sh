@@ -21,11 +21,11 @@ echo "Setting BALENA_HOST_CONFIG_start_x"
 
 d="{\"device\": \"$BALENA_DEVICE_ID\",\"name\": \"BALENA_HOST_CONFIG_start_x\",\"value\": \"1\"}"
 
-curl -sSL -X POST \
+curl -s -X POST \
 "$BALENA_API_URL/v6/device_config_variable" \
 -H "Content-Type: application/json" \
 -H "Authorization: Bearer $BALENA_API_KEY" \
---data "$d"
+--data "$d" > /dev/null
 
 # gpu Mem
 
@@ -33,11 +33,11 @@ echo "Setting BALENA_HOST_CONFIG_gpu_mem"
 
 d="{\"device\": \"$BALENA_DEVICE_ID\",\"name\": \"BALENA_HOST_CONFIG_gpu_mem\",\"value\": \"192\"}"
 
-curl -sSL -X POST \
+curl -s -X POST \
 "$BALENA_API_URL/v6/device_config_variable" \
 -H "Content-Type: application/json" \
 -H "Authorization: Bearer $BALENA_API_KEY" \
---data "$d"
+--data "$d" > /dev/null
 
 # start app with proper pipeline
 
